@@ -6,7 +6,7 @@ import itertools
 import os
 
 class PlotMethods():
-    def __init__(self, x_label, y_label, title, save_dir="./"):
+    def __init__(self, x_label, y_label, title, x_axis, save_dir="./"):
         self.colors = [
             (0, 0.4470, 0.7410),
             (0.8500, 0.3250, 0.0980),
@@ -22,6 +22,7 @@ class PlotMethods():
         self.x_label = x_label
         self.y_label = y_label
         self.title = title
+        self.x_axis = x_axis
         self.save_dir = save_dir
 
     def plot_graph(self, methods, results):
@@ -39,14 +40,13 @@ class PlotMethods():
         self.save_fig(png_path=self.save_dir+"fig1.png", eps_path=self.save_dir+"fig1.eps")
 
     def plot_res(self, ax, methods, results, is_errorbar=False):
-        x = range(results.shape[1])
         for i, mode in enumerate(methods):
-            plt.plot(x, results[i, :], label=mode, ms=12, linewidth=4.5, marker=self.markers[i], color=self.colors[i], linestyle=self.lines[i])
+            plt.plot(self.x_axis, results[i, :], label=mode, ms=12, linewidth=4.5, marker=self.markers[i], color=self.colors[i], linestyle=self.lines[i])
             if is_errorbar:
                 raise NotImplementedError("Not implemented.")
                 yerr1 = y - y_min
                 yerr2 = y_max - y
-                ax.errorbar(x, y, label=label, yerr=[yerr1, yerr2], capsize=10, ms=12,
+                ax.errorbar(self.x_axis, y, label=label, yerr=[yerr1, yerr2], capsize=10, ms=12,
                             linewidth=5, elinewidth=5, marker=marker, color=color, linestyle=line)
 
     def init_figure(self):
