@@ -6,7 +6,7 @@ import itertools
 import os
 
 class PlotMethods():
-    def __init__(self, x_label, y_label, title, x_axis, save_dir="./", xlim=None, ylim=None):
+    def __init__(self, x_label, y_label, title, x_axis, save_dir="./", xlim=None, ylim=None, legend_loc="lower left"):
         self.colors = [
             (0, 0.4470, 0.7410),
             (0.8500, 0.3250, 0.0980),
@@ -24,6 +24,7 @@ class PlotMethods():
         self.title = title
         self.x_axis = x_axis
         self.save_dir = save_dir
+        self.legend_loc = legend_loc
         self.xlim, self.ylim = (xlim, ylim)
 
     def plot_graph(self, methods, results):
@@ -64,7 +65,7 @@ class PlotMethods():
 
     def arange_graph(self):
         """ arange graph """
-        lgd = plt.legend(loc="lower left", prop={'size':20})
+        lgd = plt.legend(loc=self.legend_loc, prop={'size':20})
         plt.title(self.title,  fontdict={'size':23})
         plt.grid(color='k', linestyle='--', linewidth=0.3)
         plt.xlabel(self.x_label, fontsize=25)
