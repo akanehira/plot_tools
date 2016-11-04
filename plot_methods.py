@@ -6,7 +6,7 @@ import itertools
 import os
 
 class PlotMethods():
-    def __init__(self, x_label, y_label, title, x_axis, save_dir="./"):
+    def __init__(self, x_label, y_label, title, x_axis, save_dir="./", xlim=None, ylim=None):
         self.colors = [
             (0, 0.4470, 0.7410),
             (0.8500, 0.3250, 0.0980),
@@ -24,6 +24,7 @@ class PlotMethods():
         self.title = title
         self.x_axis = x_axis
         self.save_dir = save_dir
+        self.xlim, self.ylim = (xlim, ylim)
 
     def plot_graph(self, methods, results):
         """
@@ -37,7 +38,7 @@ class PlotMethods():
         self.plot_res(ax, methods, results, is_errorbar=False)
         self.arange_graph()
         self.add_ticks(ax, is_x=True, is_y=True, size=18)
-        self.save_fig(png_path=self.save_dir+"fig1.png", eps_path=self.save_dir+"fig1.eps")
+        self.save_fig(png_path=self.save_dir+"fig.png", eps_path=self.save_dir+"fig.eps")
 
     def plot_res(self, ax, methods, results, is_errorbar=False):
         for i, mode in enumerate(methods):
@@ -65,10 +66,13 @@ class PlotMethods():
         """ arange graph """
         lgd = plt.legend(loc="lower left", prop={'size':20})
         plt.title(self.title,  fontdict={'size':23})
-        plt.xlim([0, 1.0])
         plt.grid(color='k', linestyle='--', linewidth=0.3)
         plt.xlabel(self.x_label, fontsize=25)
         plt.ylabel(self.y_label, fontsize=25)
+        if self.xlim:
+            plt.xlim(self.xlim)
+        if self.ylim:
+            plt.ylim(self.ylim)
 
     def add_ticks(self, ax, is_x=True, is_y=True, size=18):
         if is_x:
