@@ -6,7 +6,7 @@ import itertools
 import os
 
 class PlotMethods():
-    def __init__(self, x_label, y_label, title, x_axis, save_dir="./", xlim=None, ylim=None, legend_loc="lower left"):
+    def __init__(self, x_label, y_label, title, x_axis, save_dir="./", save_filename="img.jpg", xlim=None, ylim=None, legend_loc="lower left"):
         self.colors = [
             (0, 0.4470, 0.7410),
             (0.8500, 0.3250, 0.0980),
@@ -24,6 +24,7 @@ class PlotMethods():
         self.title = title
         self.x_axis = x_axis
         self.save_dir = save_dir
+        self.save_filename = save_filename
         self.legend_loc = legend_loc
         self.xlim, self.ylim = (xlim, ylim)
 
@@ -39,7 +40,7 @@ class PlotMethods():
         self.plot_res(ax, methods, results, is_errorbar=False)
         self.arange_graph()
         self.add_ticks(ax, is_x=True, is_y=True, size=18)
-        self.save_fig(png_path=self.save_dir+"fig.png", eps_path=self.save_dir+"fig.eps")
+        self.save_fig(path=self.save_dir+self.save_filename)
 
     def plot_res(self, ax, methods, results, is_errorbar=False):
         for i, mode in enumerate(methods):
@@ -58,10 +59,14 @@ class PlotMethods():
         ax = fig.add_subplot(111)
         return ax
 
-    def save_fig(self, png_path, eps_path):
+    def save_fig(self, path):
         """ save both png and eps """
-        plt.savefig(png_path, bbox_inches="tight", pad_inches=0.0)
-        subprocess.call("convert %s %s"%(png_path, eps_path), shell=True)
+        if ".eps" in path:
+            png_path = path.replace(".eps", ".png")
+            plt.savefig(png_path, bbox_inches="tight", pad_inches=0.0)
+            subprocess.call("convert %s %s"%(png_path, path), shell=True)
+        else:
+            plt.savefig(png_path, bbox_inches="tight", pad_inches=0.0)
 
     def arange_graph(self):
         """ arange graph """
