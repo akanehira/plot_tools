@@ -8,12 +8,13 @@ import os
 class PlotMethods():
     def __init__(self, x_label, y_label, title, save_dir="./",
                  save_filename="img.jpg", xlim=None, ylim=None,
-                 is_errorbar=False, is_legend=False, legend_loc="lower left"):
+                 is_errorbar=False, is_legend=False, legend_loc="lower left"
+                 figsize=None):
         self.colors = [
-            (0, 0.4470, 0.7410),
             (0.8500, 0.3250, 0.0980),
-            (0.9290, 0.6940, 0.1250),
+            (0, 0.4470, 0.7410),
             (0.4940, 0.1840, 0.5560),
+            (0.9290, 0.6940, 0.1250),
             (0.4660, 0.6740, 0.1880),
             (0.3010, 0.7450, 0.9330),
             (0.6350, 0.0780, 0.1840)
@@ -30,6 +31,7 @@ class PlotMethods():
         self.is_errorbar = is_errorbar
         self.is_legend = is_legend
         self.xlim, self.ylim = (xlim, ylim)
+        self.figsize = figsize
 
     def _check_mat_dim(self, mat):
         """
@@ -52,7 +54,7 @@ class PlotMethods():
         results = self._check_mat_dim(results)
         if self.is_errorbar:
             errors = self._check_mat_dim(errors)
-        ax = self.init_figure()
+        ax = self.init_figure(figsize=self.figsize)
         self.plot_res(ax, methods, x_axis, results, errors)
         self.arange_graph()
         self.add_ticks(ax, is_x=True, is_y=True, size=18)
